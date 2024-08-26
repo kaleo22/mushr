@@ -51,9 +51,6 @@ sudo apt-get update -y \
     && apt-get install keyboard-configuration apt-utils gnupg2 curl -y \
     && apt-get update -y
 
-# Download bags required for localization assignment
-source $MUSHR_WS_PATH/catkin_ws/devel/setup.bash && source $MUSHR_WS_PATH/catkin_ws/src/mushr478/localization/scripts/download_bags.sh
-
 # ======================= BEGIN ROS Noetic ===================================
 # Setup software sources from packages.ros.org
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -68,7 +65,7 @@ sudo apt-get update
 sudo apt-get install ros-noetic-desktop -y
 
 # Auto source ROS on terminal startup
-sudo echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 
 # Source it for this terminal
 sudo source /opt/ros/noetic/setup.bash
@@ -95,7 +92,7 @@ sudo apt-get update
 sudo apt-get install -y python3-vcstool python3-pip
 
 # Install extra ROS packages
-sudo apt-get install -y ros-noetic-ackermann-msgs ros-noetic-map-server ros-noetic-urg-node ros-noetic-robot-state-publisher ros-noetic-xacro ros-noetic-joy ros-noetic-ddynamic-reconfigure ros-noetic-fake-localization ros-noetic-gmapping ros-noetic-rosbridge-suite ros-noetic-sbpl ros-noetic-plogjuggler-ros ros-noetic-realsense2-description
+sudo apt-get install -y ros-noetic-ackermann-msgs ros-noetic-map-server ros-noetic-urg-node ros-noetic-robot-state-publisher ros-noetic-xacro ros-noetic-joy ros-noetic-ddynamic-reconfigure ros-noetic-fake-localization ros-noetic-gmapping ros-noetic-rosbridge-suite ros-noetic-sbpl ros-noetic-plotjuggler-ros ros-noetic-realsense2-description
 
 # Install catkin tools
 sudo wget http://packages.ros.org/ros.key -O - | apt-key add -
@@ -104,11 +101,12 @@ sudo apt-get install -y python3-catkin-tools
 
 pip3 install empy
 pip3 install networkx
+pip3 install cython
 pip3 install catkin-tools ## because apparently python3-catkin-tools != catkin-tools?
 sudo apt-get install -y qtbase5-dev ros-noetic-pybind11-catkin
 
 # Auto source this workspace on terminal startup
-sudo echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
 # Install rangelibc
 cd /home/mushr/catkin_ws/src/range_libc/pywrapper
@@ -121,3 +119,13 @@ mkdir /home/mushr/.rviz
 cp /home/mushr/catkin_ws/src/mushr/mushr_utils/rviz/default.rviz ~/.rviz/
 
 # ===================== END   dependencies ===================================
+
+# ===================== BEGIN class code ===================================
+
+cd $MUSHR_WS_PATH/catkin_ws/src/ && git clone https://gitlab.cs.washington.edu/cse478/staff/mushr478-staff.git
+
+
+# Download bags required for localization assignment
+source $MUSHR_WS_PATH/catkin_ws/devel/setup.bash && source $MUSHR_WS_PATH/catkin_ws/src/mushr478/localization/scripts/download_bags.sh
+
+# ===================== END class code ===================================
