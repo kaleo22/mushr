@@ -33,7 +33,7 @@ pip3 install vcstool
 
 # Pull repos
 export MUSHR_WS_PATH=$(echo $MUSHR_INSTALL_PATH | sed 's:/catkin_ws.*::')
-cd $MUSHR_WS_PATH/catkin_ws/src/ && vcs import < mushr/base-repos.yaml && vcs import < mushr/nav-repos.yaml; fi
+cd $MUSHR_WS_PATH/catkin_ws/src/ && vcs import < mushr/base-repos.yaml && vcs import < mushr/nav-repos.yaml
 
 
 for ignored_package in push_button_utils ydlidar; do
@@ -44,12 +44,15 @@ popd
 
 sudo apt-get update
 
-sudo apt-get install software-properties-common -y
+sudo apt-get install SOFTWARE-PROPERTIES-COMMON -y
 
 # Install docker deps for mushr_install 
 sudo apt-get update -y \
     && apt-get install keyboard-configuration apt-utils gnupg2 curl -y \
     && apt-get update -y
+
+# Download bags required for localization assignment
+source $MUSHR_WS_PATH/catkin_ws/devel/setup.bash && source $MUSHR_WS_PATH/catkin_ws/src/mushr478/localization/scripts/download_bags.sh
 
 # ======================= BEGIN ROS Noetic ===================================
 # Setup software sources from packages.ros.org
@@ -92,7 +95,7 @@ sudo apt-get update
 sudo apt-get install -y python3-vcstool python3-pip
 
 # Install extra ROS packages
-sudo apt-get install -y ros-noetic-ackermann-msgs ros-noetic-map-server ros-noetic-urg-node ros-noetic-robot-state-publisher ros-noetic-xacro ros-noetic-joy ros-noetic-ddynamic-reconfigure ros-noetic-fake-localization ros-noetic-gmapping ros-noetic-rosbridge-suite ros-noetic-sbpl
+sudo apt-get install -y ros-noetic-ackermann-msgs ros-noetic-map-server ros-noetic-urg-node ros-noetic-robot-state-publisher ros-noetic-xacro ros-noetic-joy ros-noetic-ddynamic-reconfigure ros-noetic-fake-localization ros-noetic-gmapping ros-noetic-rosbridge-suite ros-noetic-sbpl ros-noetic-plogjuggler-ros ros-noetic-realsense2-description
 
 # Install catkin tools
 sudo wget http://packages.ros.org/ros.key -O - | apt-key add -
@@ -100,6 +103,7 @@ sudo apt-get update
 sudo apt-get install -y python3-catkin-tools
 
 pip3 install empy
+pip3 install networkx
 pip3 install catkin-tools ## because apparently python3-catkin-tools != catkin-tools?
 sudo apt-get install -y qtbase5-dev ros-noetic-pybind11-catkin
 
@@ -107,13 +111,13 @@ sudo apt-get install -y qtbase5-dev ros-noetic-pybind11-catkin
 sudo echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
 # Install rangelibc
-cd ~/catkin_ws/src/range_libc/pywrapper
+cd /home/mushr/catkin_ws/src/range_libc/pywrapper
 sudo python3 setup.py install
-cd ~/catkin_ws/src
+cd /home/mushr/catkin_ws/src
 sudo rm -rf range_libc
 
 # Create default RVIZ setup
-mkdir ~/.rviz
-cp ~/catkin_ws/src/mushr/mushr_utils/rviz/default.rviz ~/.rviz/
+mkdir /home/mushr/.rviz
+cp /home/mushr/catkin_ws/src/mushr/mushr_utils/rviz/default.rviz ~/.rviz/
 
 # ===================== END   dependencies ===================================
